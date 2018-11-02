@@ -1,0 +1,182 @@
+$ cd ~/Desktop
+$ mkdir mb
+$ cd mb
+$ pipenv install django==2.1
+$ pipenv shell
+(mb) $ django-admin startproject mb_project .
+(mb) $ python manage.py startapp posts
+
+Open up your settings.py and check that it has this code:
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'posts.apps.PostsConfig', # new
+]
+
+(mb) $ python manage.py migrate
+(mb) $ ls
+You should see something like this: Pipfile      db.sqlite3   mb_project
+Pipfile.lock manage.py    posts
+
+(mb) $ python manage.py runserver
+now check  http://127.0.0.1:8000/ for your rocket ship
+
+go to posts/models.py and check for this code:
+
+# posts/models.py
+from django.db import models
+
+
+class Post(models.Model):
+    text = models.TextField()
+
+(mb) $ python manage.py makemigrations posts
+(mb) $ python manage.py migrate
+
+(mb) $ python manage.py createsuperuser
+Username (leave blank to use 'wsv'): wsv
+Email:
+Password:
+Password (again):
+Superuser created successfully.
+
+go to  http://127.0.0.1:8000/admin/ and login
+
+Check to see that posts/admin.py says this:
+
+# posts/admin.py
+from django.contrib import admin
+
+from .models import Post
+
+admin.site.register(Post)
+
+Refresh your browser
+
+Now let’s create our first message board post for our database. Click on the + Add button opposite Posts. Enter your own text in the Text form field.
+
+change your posts/models.py
+
+# posts/models.py
+from django.db import models
+
+
+class Post(models.Model):
+    text = models.TextField()
+
+    def __str__(self):
+        return self.text[:50]
+
+
+It will now show the 1st 50 characters in you text field!
+
+change your posts/views.py:
+
+# posts/views.py
+from django.views.generic import ListView
+from .models import Post
+
+
+class HomePageView(ListView):
+    model = Post
+    template_name = 'home.html'
+
+
+(mb) $ mkdir templates
+(mb) $ touch templates/home.html
+
+Update your DIRS in settings.py
+
+change your views.py
+
+# posts/views.py
+from django.views.generic import ListView
+from .models import Post
+
+
+class HomePageView(ListView):
+    model = Post
+    template_name = 'home.html'
+
+# mb_project/settings.py
+TEMPLATES = [
+    {
+        ...
+        'DIRS': [os.path.join(BASE_DIR, 'templates')], # new
+        ...
+    },
+]
+
+go to your templates/home.html and change it to this:
+
+
+<!-- templates/home.html -->
+<h1>Message board homepage</h1>
+<ul>
+  {% for post in object_list %}
+    <li>{{ post.text }}</li>
+  {% endfor %}
+</u
+
+
+(mb) $ touch posts/urls.py
+
+update your posts/urls.py:
+
+# posts/urls.py
+from django.urls import path
+
+from .views import HomePageView
+
+urlpatterns = [
+    path('', HomePageView.as_view(), name='home'),
+]
+
+Restart the server with python manage.py runserver and navigate to our homepage http://127.0.0.1:8000/ which now lists out our message board posts.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
