@@ -1,0 +1,9 @@
+mkdir helloworld
+cd helloworld/
+pipenv install django==2.1
+pipenv shell
+cd helloworld/
+django-admin startproject helloworld_project .
+python manage.py runserver
+python manage.py startapp pages
+
