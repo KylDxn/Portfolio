@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Heroku Message Board By Kyle!</title>
+<style>
+
+    
+
+</style>
+</head>
+<body bgcolor="#E6E6FA">
+
+<!-- templates/home.html -->
+<h1>Message Board Homepage By Kyle!</h1>
+<ul>
+  {% for post in all_posts_list %}
+    <li>{{ post.text }}</li>
+  {% endfor %}
+</ul>
+</body>
+</html>

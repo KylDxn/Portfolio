@@ -1,0 +1,60 @@
+
+From Chapter 1 -- the essential startup for all projects
+
+$ mkdir chap02_23oct  		#start w a fresh directory
+$ cd chap02_23oct/ 		#change to that new directory
+$ pipenv install django==2.1 	#install a virtual environment onto the new directory
+$ pipenv shell 			#launch the virtual environment
+How to know the activation worked - look for (django-###):
+(django)compsci@compsci-VBox:~/django$
+$ django-admin startproject hellochap02 . # remember the . for current directory
+$ python manage.py runserver 	#starts the django webserver, look for this:
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C
+-- go to the webpage and look for the rocket -- time to celebrate!
+
+Now we are in Chapter 2 -- Building our projects
+
+$ python manage.py startapp pages # creating an app named pages (to follow chap 2 example)
+$ cd pages 			# change the directory to the one we just made for our app
+$ gedit views.py 		# Create a pyton program in the views framework
+
+from django.http import HttpResponse # Creating a python progam in the views framework
+
+
+
+def homePageView(request):
+    return HttpResponse('Hello, World! This is Kyle')
+
+$ touch urls.py  		#Creating a new python file
+
+$ gedit urls.py
+from django.urls import path
+from .views import homePageView
+
+urlpatterns = [
+    path('', homePageView, name='home')
+]
+
+$ cd hellochap02/
+
+$ gedit urls.py
+
+
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('pages.urls')),
+]
+
+ ------BitBucket-----
+$ sudo apt update
+$ sudo apt install git
+$ cd (current git directory)
+$ git init
+$ git config --global user.email 'useremail'
+$ git config --global user.name 'username'
+$ 
+
